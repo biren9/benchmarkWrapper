@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class BenchmarkService: BenchmarkServiceProtocol {
+open class BenchmarkService: BenchmarkServiceProtocol {
     private let semaphore = DispatchSemaphore(value: 1)
     private var localScore = 0
     
