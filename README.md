@@ -1,6 +1,7 @@
 # BenchmarkWrapper
 
 This package provides a wrapper for individual benchmarking tasks.
+Currently at an early stage and should act as a prove of concept.
 
 ## Custom benchmark service
 
