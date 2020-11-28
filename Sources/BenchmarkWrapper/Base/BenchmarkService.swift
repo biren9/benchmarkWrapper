@@ -32,9 +32,9 @@ open class BenchmarkService: BenchmarkServiceProtocol {
         return localScore
     }
     
-    public func cancel() { }
+    open func cancel() { }
     
-    public func calculate() { }
+    open func calculate() { }
     
     public func isCancelled() -> Bool {
         Thread.current.isCancelled
