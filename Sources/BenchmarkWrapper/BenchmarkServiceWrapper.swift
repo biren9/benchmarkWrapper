@@ -29,6 +29,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     
     private var threads: [Thread: BenchmarkServiceProtocol] = [:]
     
+    public init() { }
     
     public func setConfigurations(_ configuration: BenchmarkServiceConfigurationProtocol) {
         setConfigurations([configuration])
