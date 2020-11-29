@@ -8,13 +8,19 @@
 import Foundation
 import Combine
 
+public enum BenchmarkRunningState {
+    case needConfiguration
+    case readyToRun
+    case running
+}
+
 public final class BenchmarkServiceWrapper: ObservableObject {
     @Published public private(set) var progress: Double = 0
-    @Published public private(set) var isRunning = false
+    @Published public private(set) var runningState: BenchmarkRunningState = .needConfiguration
     @Published public private(set) var scores: [BenchmarkScore] = []
     
-    private let benchmarkServiceConfigurations: [BenchmarkServiceConfigurationProtocol]
-    private let completeDuration: TimeInterval
+    private var benchmarkServiceConfigurations: [BenchmarkServiceConfigurationProtocol] = []
+    private var completeDuration: TimeInterval = 0
     
     private var serviceIndex = 0
     private var benchmarkStartDate: Date?
@@ -23,15 +29,26 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     
     private var threads: [Thread: BenchmarkServiceProtocol] = [:]
     
-    public init(benchmarkServiceConfigurations: [BenchmarkServiceConfigurationProtocol]) {
-        self.benchmarkServiceConfigurations = benchmarkServiceConfigurations
+    
+    public func setConfigurations(_ configuration: BenchmarkServiceConfigurationProtocol) {
+        setConfigurations([configuration])
+    }
+    
+    public func setConfigurations(_ configurations: [BenchmarkServiceConfigurationProtocol]) {
+        cancelThreads()
+        benchmarkServiceConfigurations = configurations
         completeDuration = benchmarkServiceConfigurations.reduce(0, { $0 + $1.duration })
+        if completeDuration > 0 {
+            runningState = .readyToRun
+        } else {
+            runningState = .needConfiguration
+        }
     }
     
     public func run() {
-        guard completeDuration > 0 else { return }
+        guard runningState != .needConfiguration else { return }
         scores = []
-        isRunning = true
+        runningState = .running
         progress = 0
         serviceIndex = 0
         benchmarkStartDate = Date()
@@ -120,7 +137,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     private func stopOperations(progress: Double) {
         timer?.invalidate()
         timer = nil
-        isRunning = false
+        runningState = .readyToRun
         self.progress = progress
     }
 }
