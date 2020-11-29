@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct BenchmarkConfiguration: BenchmarkServiceConfigurationProtocol {
+public class BenchmarkConfiguration: ObservableObject, BenchmarkServiceConfigurationProtocol {
     public let qualityOfService: QualityOfService
     public let serviceType: BenchmarkServiceProtocol.Type
     public let description: String
