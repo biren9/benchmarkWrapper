@@ -13,8 +13,8 @@ public enum CpuCoreRunType {
 }
 
 public struct Algortihm {
-    let name: String
-    let type: BenchmarkServiceProtocol.Type
+    public let name: String
+    public let type: BenchmarkServiceProtocol.Type
     
     public init(name: String, type: BenchmarkServiceProtocol.Type) {
         self.name = name
