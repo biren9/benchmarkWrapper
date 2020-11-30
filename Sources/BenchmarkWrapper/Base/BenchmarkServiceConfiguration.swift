@@ -7,18 +7,10 @@
 
 import Foundation
 
-public class BenchmarkConfiguration: ObservableObject, BenchmarkServiceConfigurationProtocol {
+public struct BenchmarkConfiguration: BenchmarkServiceConfigurationProtocol {
     public let qualityOfService: QualityOfService
     public let serviceType: BenchmarkServiceProtocol.Type
-    public let description: String
+    public let description: String?
     public let cpuCoreRunType: CpuCoreRunType
     public let duration: TimeInterval
-    
-    public init(cpuCoreRunType: CpuCoreRunType, duration: TimeInterval, description: String, serviceType: BenchmarkServiceProtocol.Type, qualityOfService: QualityOfService) {
-        self.cpuCoreRunType = cpuCoreRunType
-        self.duration = duration
-        self.description = description
-        self.serviceType = serviceType
-        self.qualityOfService = qualityOfService
-    }
 }

@@ -73,8 +73,8 @@ public final class BenchmarkServiceWrapper: ObservableObject {
         let elapsedServiceTimeInterval = abs(serviceStartDate!.timeIntervalSinceNow)
         if elapsedServiceTimeInterval > benchmarkServiceConfigurations[serviceIndex].duration {
             self.scores += [BenchmarkScore(
-                name: benchmarkServiceConfigurations[serviceIndex].description,
-                score: fetchScoresFromActiveServices()
+                score: fetchScoresFromActiveServices(),
+                configuration: benchmarkServiceConfigurations[serviceIndex]
             )]
             cancelThreads()
             if benchmarkServiceConfigurations.count > serviceIndex+1 {
