@@ -63,6 +63,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     
     public func stop() {
         stopOperations(progress: 0)
+        cancelThreads()
         scores = []
     }
     
