@@ -15,6 +15,11 @@ public enum CpuCoreRunType {
 public struct Algortihm {
     let name: String
     let type: BenchmarkServiceProtocol.Type
+    
+    public init(name: String, type: BenchmarkServiceProtocol.Type) {
+        self.name = name
+        self.type = type
+    }
 }
 
 public protocol BenchmarkServiceProtocol: class {
