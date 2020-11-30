@@ -9,14 +9,14 @@ import Foundation
 
 public struct BenchmarkConfiguration: BenchmarkServiceConfigurationProtocol {
     public let qualityOfService: QualityOfService
-    public let serviceType: BenchmarkServiceProtocol.Type
+    public let algorithm: Algortihm
     public let description: String?
     public let cpuCoreRunType: CpuCoreRunType
     public let duration: TimeInterval
     
-    public init(qualityOfService: QualityOfService, serviceType: BenchmarkServiceProtocol.Type, description: String? = nil, cpuCoreRunType: CpuCoreRunType, duration: TimeInterval) {
+    public init(qualityOfService: QualityOfService, algorithm: Algortihm, description: String? = nil, cpuCoreRunType: CpuCoreRunType, duration: TimeInterval) {
         self.qualityOfService = qualityOfService
-        self.serviceType = serviceType
+        self.algorithm = algorithm
         self.description = description
         self.cpuCoreRunType = cpuCoreRunType
         self.duration = duration

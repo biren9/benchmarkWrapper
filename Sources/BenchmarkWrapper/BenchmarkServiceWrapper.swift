@@ -103,7 +103,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
             processorCount = ProcessInfo.processInfo.processorCount
         }
         for _ in 1...processorCount {
-            let service = configuration.serviceType.init()
+            let service = configuration.algorithm.type.init()
             createThread(service: service, qos: configuration.qualityOfService)
         }
     }

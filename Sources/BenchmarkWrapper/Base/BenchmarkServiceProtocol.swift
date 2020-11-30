@@ -12,6 +12,11 @@ public enum CpuCoreRunType {
     case multiCore
 }
 
+public struct Algortihm {
+    let name: String
+    let type: BenchmarkServiceProtocol.Type
+}
+
 public protocol BenchmarkServiceProtocol: class {
     init()
     
@@ -25,5 +30,5 @@ public protocol BenchmarkServiceConfigurationProtocol {
     var qualityOfService: QualityOfService { get }
     var description: String? { get }
     var duration: TimeInterval { get }
-    var serviceType: BenchmarkServiceProtocol.Type { get }
+    var algorithm: Algortihm { get }
 }
