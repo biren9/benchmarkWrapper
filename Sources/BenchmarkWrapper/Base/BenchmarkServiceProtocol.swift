@@ -23,8 +23,9 @@ public struct Algortihm {
 }
 
 public protocol BenchmarkServiceProtocol: class {
-    init()
+    init(deadline: DispatchTime)
     
+    func isCancelled() -> Bool
     func cancel()
     func calculate()
     func generateScore() -> Int

@@ -8,10 +8,13 @@
 import Foundation
 
 open class BenchmarkService: BenchmarkServiceProtocol {
+    private let deadline: DispatchTime
     private let semaphore = DispatchSemaphore(value: 1)
     private var localScore = 0
     
-    public required init() { }
+    public required init(deadline: DispatchTime) {
+        self.deadline = deadline
+    }
     
     public func increaseScore() {
         semaphore.wait()
@@ -32,11 +35,24 @@ open class BenchmarkService: BenchmarkServiceProtocol {
         return localScore
     }
     
-    open func cancel() { }
+    open func cancel() {
+        Thread.current.cancel()
+    }
     
-    open func calculate() { }
+    open func calculate() {
+        if isTimeOver() {
+            Thread.current.cancel()
+        }
+    }
     
     public func isCancelled() -> Bool {
-        Thread.current.isCancelled
+        if isTimeOver() || Thread.current.isCancelled {
+            return true
+        }
+        return false
+    }
+    
+    private func isTimeOver() -> Bool {
+        DispatchTime.now() > deadline
     }
 }
