@@ -71,7 +71,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     }
     
     private func calculation(service: BenchmarkServiceProtocol) {
-        while service.isCancelled() {
+        while !service.isCancelled() {
             service.calculate()
         }
     }
