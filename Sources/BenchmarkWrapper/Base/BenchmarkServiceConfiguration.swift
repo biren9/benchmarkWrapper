@@ -12,9 +12,9 @@ public struct BenchmarkConfiguration: BenchmarkServiceConfigurationProtocol {
     public let algorithm: Algortihm
     public let description: String?
     public let cpuCoreRunType: CpuCoreRunType
-    public let duration: TimeInterval
+    public let duration: DispatchTimeInterval
     
-    public init(qualityOfService: QualityOfService, algorithm: Algortihm, description: String? = nil, cpuCoreRunType: CpuCoreRunType, duration: TimeInterval) {
+    public init(qualityOfService: QualityOfService, algorithm: Algortihm, description: String? = nil, cpuCoreRunType: CpuCoreRunType, duration: DispatchTimeInterval) {
         self.qualityOfService = qualityOfService
         self.algorithm = algorithm
         self.description = description

@@ -19,7 +19,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     @Published public private(set) var score: BenchmarkScore?
     
     private var benchmarkServiceConfiguration: BenchmarkServiceConfigurationProtocol!
-    private var benchmarkStartDate: Date?
+    private var benchmarkStartDate: DispatchTime?
     private var timer: Timer?
     
     private var threads: [Thread: BenchmarkServiceProtocol] = [:]
@@ -27,9 +27,9 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     public init() { }
     
     public func setConfiguration(_ configuration: BenchmarkServiceConfigurationProtocol) {
-        cancelThreads()
+        stop()
         benchmarkServiceConfiguration = configuration
-        if configuration.duration > 0 {
+        if configuration.duration.nanoseconds > 0 {
             runningState = .readyToRun
         } else {
             runningState = .needConfiguration
@@ -41,7 +41,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
         score = nil
         runningState = .running
         progress = 0
-        benchmarkStartDate = Date()
+        benchmarkStartDate = .now()
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] _ in
             guard let self = self else { return }
             guard let benchmarkStartDate = self.benchmarkStartDate else { return }
@@ -56,12 +56,12 @@ public final class BenchmarkServiceWrapper: ObservableObject {
         score = nil
     }
     
-    private func updateTimer(benchmarkStartDate: Date) {
-        let elapsedBenchmarkTimeInterval = abs(benchmarkStartDate.timeIntervalSinceNow)
-        self.progress = min(elapsedBenchmarkTimeInterval / benchmarkServiceConfiguration.duration, 1)
+    private func updateTimer(benchmarkStartDate: DispatchTime) {
+        let a = benchmarkStartDate.distance(to: .now())
+        progress = min(Double(a.nanoseconds) / Double(benchmarkServiceConfiguration.duration.nanoseconds), 1)
         
         let runningServices = threads.filter { !$0.value.isCancelled() }
-        if runningServices.count == 0 {
+        if runningServices.isEmpty {
             self.score = BenchmarkScore(
                 score: fetchScoresFromActiveServices(),
                 configuration: benchmarkServiceConfiguration
@@ -86,7 +86,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
             processorCount = ProcessInfo.processInfo.processorCount
         }
         
-        let deadline: DispatchTime = .now() + .milliseconds(Int(benchmarkServiceConfiguration.duration*1000))
+        let deadline: DispatchTime = .now() + benchmarkServiceConfiguration.duration
         for _ in 1...processorCount {
             let service = benchmarkServiceConfiguration.algorithm.type.init(deadline: deadline)
             createThread(service: service, qos: benchmarkServiceConfiguration.qualityOfService)
