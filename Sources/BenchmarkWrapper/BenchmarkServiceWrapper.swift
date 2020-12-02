@@ -66,6 +66,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
                 score: fetchScoresFromActiveServices(),
                 configuration: benchmarkServiceConfiguration
             )
+            cancelThreads()
             self.stopOperations(progress: 1)
         }
     }
