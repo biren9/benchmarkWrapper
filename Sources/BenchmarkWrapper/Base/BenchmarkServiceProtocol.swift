@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum CpuCoreRunType {
+public enum CpuCoreRunType: Equatable, Hashable {
     case singleCore
     case multiCore
     case custom(Int)
