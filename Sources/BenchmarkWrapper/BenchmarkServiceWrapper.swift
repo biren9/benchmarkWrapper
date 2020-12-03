@@ -57,8 +57,8 @@ public final class BenchmarkServiceWrapper: ObservableObject {
     }
     
     private func updateTimer(benchmarkStartDate: DispatchTime) {
-        let a = benchmarkStartDate.distance(to: .now())
-        progress = min(Double(a.nanoseconds) / Double(benchmarkServiceConfiguration.duration.nanoseconds), 1)
+        let timeElapsed = benchmarkStartDate.distance(to: .now())
+        progress = min(Double(timeElapsed.nanoseconds) / Double(benchmarkServiceConfiguration.duration.nanoseconds), 1)
         
         let runningServices = threads.filter { !$0.value.isCancelled() }
         if runningServices.isEmpty {
@@ -84,6 +84,8 @@ public final class BenchmarkServiceWrapper: ObservableObject {
             processorCount = 1
         case .multiCore:
             processorCount = ProcessInfo.processInfo.processorCount
+        case .custom(let cores):
+            processorCount = cores
         }
         
         let deadline: DispatchTime = .now() + benchmarkServiceConfiguration.duration

@@ -10,6 +10,7 @@ import Foundation
 public enum CpuCoreRunType {
     case singleCore
     case multiCore
+    case custom(Int)
 }
 
 public struct Algortihm {
