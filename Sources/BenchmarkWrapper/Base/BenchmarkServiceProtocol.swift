@@ -35,6 +35,7 @@ public protocol BenchmarkServiceProtocol: class {
 public protocol BenchmarkServiceConfigurationProtocol {
     var cpuCoreRunType: CpuCoreRunType { get }
     var qualityOfService: QualityOfService { get }
+    var threadPriority: Double { get }
     var description: String? { get }
     var duration: DispatchTimeInterval { get }
     var algorithm: Algortihm { get }

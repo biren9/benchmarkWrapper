@@ -91,7 +91,7 @@ public final class BenchmarkServiceWrapper: ObservableObject {
         let deadline: DispatchTime = .now() + benchmarkServiceConfiguration.duration
         for _ in 1...processorCount {
             let service = benchmarkServiceConfiguration.algorithm.type.init(deadline: deadline)
-            createThread(service: service, qos: benchmarkServiceConfiguration.qualityOfService)
+            createThread(service: service, configuration: benchmarkServiceConfiguration)
         }
     }
     
@@ -111,12 +111,12 @@ public final class BenchmarkServiceWrapper: ObservableObject {
         threads = [:]
     }
     
-    private func createThread(service: BenchmarkServiceProtocol, qos: QualityOfService) {
+    private func createThread(service: BenchmarkServiceProtocol, configuration: BenchmarkServiceConfigurationProtocol) {
         let thread = Thread {
             self.calculation(service: service)
         }
-        thread.threadPriority = 1
-        thread.qualityOfService = qos
+        thread.threadPriority = configuration.threadPriority
+        thread.qualityOfService = configuration.qualityOfService
         thread.start()
         threads[thread] = service
     }
