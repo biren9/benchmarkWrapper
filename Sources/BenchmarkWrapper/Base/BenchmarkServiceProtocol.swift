@@ -23,7 +23,7 @@ public struct Algortihm {
     }
 }
 
-public protocol BenchmarkServiceProtocol: class {
+public protocol BenchmarkServiceProtocol: AnyObject {
     init(deadline: DispatchTime)
     
     func isCancelled() -> Bool
